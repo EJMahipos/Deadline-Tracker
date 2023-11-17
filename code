@@ -1,0 +1,65 @@
+import datetime
+
+class DeadlineTracker:
+    def __init__(self):
+        self.deadlines = []
+
+    def add_deadline(self, task, due_date):
+        deadline = {"Task": task, "Due Date": due_date}
+        self.deadlines.append(deadline)
+        print(f"Deadline added: {task} due on {due_date}.\n")
+
+    def view_deadlines(self):
+        if not self.deadlines:
+            print("No deadlines to display.")
+        else:
+            print("Deadlines:")
+            for idx, deadline in enumerate(self.deadlines, 1):
+                print(f"{idx}. {deadline['Task']} - Due on {deadline['Due Date']}")
+            print()
+
+    def remove_deadline(self, task):
+        for deadline in self.deadlines:
+            if deadline["Task"].lower() == task.lower():
+                self.deadlines.remove(deadline)
+                print(f"Deadline removed: {task}.\n")
+                return
+        print(f"No deadline found with the task: {task}.\n")
+
+if __name__ == "__main__":
+    tracker = DeadlineTracker()
+
+    while True:
+        print("Deadline Tracker Menu:")
+        print("1. Add Deadline")
+        print("2. View Deadlines")
+        print("3. Remove Deadline")
+        print("4. Exit")
+
+        choice = input("Enter your choice (1-4): ")
+
+        if choice == "1":
+            task = input("Enter the task name: ")
+            due_date_str = input("Enter the due date (YYYY-MM-DD): ")
+
+            try:
+                due_date = datetime.datetime.strptime(due_date_str, "%Y-%m-%d").date()
+            except ValueError:
+                print("Invalid date format. Please use YYYY-MM-DD.")
+                continue
+
+            tracker.add_deadline(task, due_date)
+
+        elif choice == "2":
+            tracker.view_deadlines()
+
+        elif choice == "3":
+            task_to_remove = input("Enter the task name to remove: ")
+            tracker.remove_deadline(task_to_remove)
+
+        elif choice == "4":
+            print("Exiting Deadline Tracker. Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please enter a number from 1 to 4.\n")
